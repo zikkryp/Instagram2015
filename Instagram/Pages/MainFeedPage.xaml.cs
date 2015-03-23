@@ -45,6 +45,7 @@ namespace Instagram.Pages
 
         private void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
+            GetFeed(true);
         }
 
         private void navigationHelper_SaveState(object sender, SaveStateEventArgs e)
@@ -65,22 +66,38 @@ namespace Instagram.Pages
 
         #endregion
 
-        private async void Button_Click(object sender, RoutedEventArgs e)
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
-            ring.IsActive = true;
+            GetFeed(true);
+        }
 
-            InstagramRequest request = new InstagramRequest("users/self/feed");
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            GetFeed(false);
+        }
 
-            await request.GetDataAsync();
+        private async void GetFeed(bool refresh)
+        {
+            var result = await InstagramAPI.GetFeedAsync(refresh);
 
-            if (request.Status == RequestStatus.Success)
-            {
-                var feed = await API.API.GetFeedAsync();
+            pageTitle.Text = result.Items.Count.ToString();
 
-                pageTitle.Text = feed.Items.Count.ToString();
-            }
+            this.DefaultViewModel["Feed"] = result.Items;
+        }
 
-            ring.IsActive = false;
+        private void GridView_ItemClick(object sender, ItemClickEventArgs e)
+        {
+
+        }
+
+        private void More_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

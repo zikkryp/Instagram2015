@@ -10,30 +10,30 @@ namespace Models
     {
         public Pagination()
         {
-            this._hasMorePages = false;
+            this.hasMorePages = false;
         }
 
         public Pagination(string nextUrl, string nextMaxId)
         {
             this.NextUrl = nextUrl;
             this.NextMaxId = nextMaxId;
-            this._hasMorePages = true;
+            this.hasMorePages = true;
         }
 
         public string NextUrl { get; set; }
         public string NextMaxId { get; set; }
 
-        private bool _hasMorePages = false;
+        private bool hasMorePages = false;
 
         public bool HasMorePages
         {
             get
             {
-                return _hasMorePages;
+                return this.hasMorePages;
             }
             private set
             {
-                _hasMorePages = value;
+                this.hasMorePages = value;
             }
         }
 

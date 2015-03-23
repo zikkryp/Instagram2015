@@ -106,7 +106,7 @@
     <Folder Include="API\Networking\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="API\API.cs" />
+    <Compile Include="API\InstagramAPI.cs" />
     <Compile Include="API\DataParser.cs" />
     <Compile Include="API\InstagramRequest.cs" />
     <Compile Include="API\JsonParser.cs" />

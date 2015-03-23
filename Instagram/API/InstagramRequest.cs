@@ -15,8 +15,13 @@ namespace Instagram.API
             InitializeRequest(method);
         }
 
+        public InstagramRequest(string method, string param)
+        {
+            InitializeRequest(method, param);
+        }
+
         private const string REQUEST_BASE_URI = "https://api.instagram.com/v1/";
-        private string requestUri;
+        public string requestUri;
 
         private JsonObject result;
         private RequestStatus status;
@@ -26,6 +31,13 @@ namespace Instagram.API
             string token = "5946413.039d35e.f9519f0fdd384170b44d7cf1b54afd6f";
 
             this.requestUri = string.Format("{0}{1}?access_token={2}", REQUEST_BASE_URI, method, token);
+        }
+
+        private void InitializeRequest(string method, string param)
+        {
+            string token = "5946413.039d35e.f9519f0fdd384170b44d7cf1b54afd6f";
+
+            this.requestUri = string.Format("{0}{1}?access_token={2}&{3}", REQUEST_BASE_URI, method, token, param);
         }
 
         public async Task GetDataAsync()

@@ -8,6 +8,11 @@ namespace Models
 {
     public class User
     {
+        public User()
+        {
+
+        }
+
         public User(string username, string profilePicture, string fullName, string id)
         {
             this.Username = username;

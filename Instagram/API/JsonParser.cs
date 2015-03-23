@@ -72,6 +72,21 @@ namespace Instagram.API
             return feed;
         }
 
+        public static User ParseUser(JsonObject userObject)
+        {
+            var dataObject = userObject["data"].GetObject();
+            var counts = GetCounts(dataObject["counts"].GetObject());
+
+            return new User(
+                dataObject["username"].GetString(),
+                dataObject["profile_picture"].GetString(),
+                dataObject["full_name"].GetString(),
+                dataObject["id"].GetString(),
+                dataObject["website"].GetString(),
+                dataObject["bio"].GetString(),
+                counts);
+        }
+
         private static Pagination GetPagination(JsonObject paginationObject)
         {
             if (paginationObject.ContainsKey("next_url") && paginationObject.ContainsKey("next_max_id"))
