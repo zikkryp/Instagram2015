@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Instagram.API;
+using Windows.UI.ViewManagement;
 
 namespace Instagram.Pages
 {
@@ -78,16 +79,18 @@ namespace Instagram.Pages
 
         private async void GetFeed(bool refresh)
         {
+            progressBar.Visibility = Windows.UI.Xaml.Visibility.Visible;
+
             var result = await InstagramAPI.GetFeedAsync(refresh);
 
-            pageTitle.Text = result.Items.Count.ToString();
-
             this.DefaultViewModel["Feed"] = result.Items;
+
+            progressBar.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
         }
 
         private void GridView_ItemClick(object sender, ItemClickEventArgs e)
         {
-
+            
         }
 
         private void More_Click(object sender, RoutedEventArgs e)
@@ -98,6 +101,56 @@ namespace Instagram.Pages
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void pageRoot_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            var orientation = ApplicationView.GetForCurrentView().Orientation;
+
+            if (orientation == ApplicationViewOrientation.Portrait)
+            {
+                Application.Current.Resources["AppWidth"] = (e.NewSize.Width - 75).ToString();
+
+                VisualStateManager.GoToState(this, "Portrait", true);
+            }
+            else if (orientation == ApplicationViewOrientation.Landscape)
+            {
+                VisualStateManager.GoToState(this, "Landscape", true);
+            }
+            else
+            {
+                throw new Exception("Unknown orientation");
+            }
+        }
+    }
+
+    public class SnappedView
+    {
+        public SnappedView()
+        {
+
+        }
+
+        public SnappedView(Size size)
+        {
+            this.Width = (int)size.Width;
+        }
+
+        public int Width { get; set; }
+
+        public int GridWidth
+        {
+            get { return this.Width - 100; }
+        }
+
+        public int ImageWidth
+        {
+            get { return this.Width - 150; }
+        }
+        
+        public int ProfileWidth
+        {
+            get { return 75; }
         }
     }
 }

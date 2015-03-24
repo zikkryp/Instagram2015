@@ -8,12 +8,13 @@
     xmlns:common="using:Instagram.Common"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    mc:Ignorable="d" SizeChanged="pageRoot_SizeChanged">
 
     <Page.Resources>
-        <x:String x:Key="AppName">My Application</x:String>
+        <x:String x:Key="AppName">Instagram</x:String>
+        <x:String x:Key="AppWidth"></x:String>
     </Page.Resources>
-
+    
     <Grid Background="#FFF3F3F3">
         <Grid.ChildrenTransitions>
             <TransitionCollection>
@@ -30,12 +31,10 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
-                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            
-            <TextBlock x:Name="pageTitle" Text="{StaticResource AppName}" Foreground="#1c5380" IsHitTestVisible="false" FontFamily="Billabong" FontSize="75" TextWrapping="NoWrap" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="0"/>
-            
+            <TextBlock x:Name="pageTitle" Text="{StaticResource AppName}" Foreground="#1c5380" IsHitTestVisible="false" FontFamily="Billabong" FontSize="75" TextWrapping="NoWrap" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1"/>
         </Grid>
+        
         <Grid Grid.Row="1">
             <Button x:Name="moreButton" Height="50" Width="50" Visibility="Collapsed" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,20,20" Click="More_Click" Background="#B31B1B1B"/>
             <Button Foreground="White" Background="#1c5380" Height="20" Margin="-5" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" BorderBrush="#FF1C5380" Click="Button_Click_1"/>
@@ -43,7 +42,7 @@
             <GridView x:Name="gridView" ItemsSource="{Binding Feed}" IsItemClickEnabled="True" 
                       SelectionMode="Extended" 
                       ItemClick="GridView_ItemClick"
-                      VerticalAlignment="Top"
+                      VerticalAlignment="Center"
                       ScrollViewer.HorizontalScrollBarVisibility="Hidden">
                 <GridView.ItemTemplate>
                     <DataTemplate>
@@ -82,6 +81,55 @@
                     </DataTemplate>
                 </GridView.ItemTemplate>
             </GridView>
+            <ListView x:Name="listView" ItemsSource="{Binding Feed}" IsItemClickEnabled="True"
+                      SelectionMode="None"
+                      Visibility="Collapsed">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Background="White">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="50"/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Image Source="{Binding Images.StandardResolution.Url}" Width="Auto" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            <Grid Grid.Row="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Button Content="OK"/>
+                                <TextBlock Text="user1, user2 and user3 liked your photo" Grid.Column="1"/>
+                            </Grid>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
         </Grid>
-    </Grid>
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState x:Name="Portrait">
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="listView" Storyboard.TargetProperty="Visibility">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="Visible"/>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="gridView" Storyboard.TargetProperty="Visibility">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed"/>
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
+                <VisualState x:Name="Landscape">
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="listView" Storyboard.TargetProperty="Visibility">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed"/>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="gridView" Storyboard.TargetProperty="Visibility">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="Visible"/>
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+    </Grid>    
 </Page>
